@@ -1,0 +1,12 @@
+{
+    "docker": {
+        "enabled": true
+    },
+    "dependencyDashboard": true,
+    "packageRules": [
+        {
+          "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+          "automerge": true
+        }
+      ]
+}
