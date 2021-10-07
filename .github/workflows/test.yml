@@ -1,0 +1,21 @@
+name: Test
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - id: get_version
+        uses: battila7/get-version-action@v2
+
+      - run: echo ${{ steps.get_version.outputs.version-without-v }}
