@@ -14,9 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
         
-      - run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Extract Git Tag
+        run: echo "GIT_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
-      - run: echo ${{ steps.get_version.outputs.VERSION }}
+      - run: echo ${{ env.GIT_TAG }}
