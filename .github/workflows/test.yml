@@ -15,9 +15,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Mandatory to use the extract version from tag action
+          fetch-depth: 0
 
       - name: Extract version from tag
         uses: damienaicheh/extract-version-from-tag-action@v1.0.0
 
-      - run: echo $MAJOR $MINOR $PATCH
+      - name: Set release tag
+        run: echo RELEASE=$MAJOR.$MINOR.$PATCH >> $GITHUB_ENV
+
+      - run: echo ${{ env.RELEASE }}
