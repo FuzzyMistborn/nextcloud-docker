@@ -15,9 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          path: main
-        
-      - name: Extract Git Tag
-        run: echo "GIT_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+          fetch-depth: 0 # Mandatory to use the extract version from tag action
 
-      - run: echo ${{ env.GIT_TAG }}
+      - name: Extract version from tag
+        uses: damienaicheh/extract-version-from-tag-action@v1.0.0
+
+      - run: echo $MAJOR $MINOR $PATCH
