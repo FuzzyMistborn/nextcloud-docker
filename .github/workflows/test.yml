@@ -15,7 +15,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - id: get_version
-        uses: battila7/get-version-action@v2
-
-      - run: echo ${{ steps.get_version.outputs.version-without-v }}
+      - run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
