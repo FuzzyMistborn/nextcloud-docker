@@ -15,11 +15,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
-      - id: get_version
-        uses: battila7/get-version-action@v2
+        with:
+          fetch-depth: 0
 
-      - run: echo ${{ steps.get_version.outputs.version-without-v }}
+      - name: Extract version from tag
+        uses: damienaicheh/extract-version-from-tag-action@v1.0.0
+
+      - name: Set release tag
+        run: echo RELEASE=$MAJOR.$MINOR.$PATCH >> $GITHUB_ENV
         
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -36,4 +39,4 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          tags: latest, {{ steps.get_version.outputs.version-without-v }}
+          tags: fuzzymistborn/nextcloud-docker:latest, fuzzymistborn/nextcloud-docker:${{ env.RELEASE }}
