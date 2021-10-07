@@ -1,0 +1,34 @@
+name: Updater
+
+on:
+  schedule:
+    - cron:  '15 0 * * *'
+
+jobs:
+  run_updater:
+    name: Run update.sh script
+    runs-on: ubuntu-latest
+    steps:
+    
+      - uses: actions/checkout@v2
+
+      - name: Run update.sh script
+        run: ./update.sh
+
+      - name: Set version
+        run: echo VERSION=$( cat latest.txt ) >> $GITHUB_ENV
+
+      - name: Commit files
+        run: |
+          if [ $(git diff HEAD | wc -l) -gt 30 ]
+          then
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+          git commit -a -m "Github Actions Update Dockerfile" || echo "Nothing to update"
+          fi
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: $VERSION
