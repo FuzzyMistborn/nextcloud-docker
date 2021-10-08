@@ -31,6 +31,7 @@ jobs:
       - name: Push changes
         uses: anothrNick/github-tag-action@1.36.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: main
-          custom_tag: $VERSION
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_BRANCHES: main
+          CUSTOM_TAG: $VERSION
+          DRY_RUN: true
