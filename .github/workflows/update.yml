@@ -33,4 +33,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BRANCHES: main
-          CUSTOM_TAG: $VERSION
+          CUSTOM_TAG: ${{ env.VERSION }}
+          DRY_RUN: true
