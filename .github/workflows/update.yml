@@ -1,6 +1,7 @@
 name: Updater
 
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '15 0 * * *'
 
@@ -28,7 +29,8 @@ jobs:
           fi
 
       - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: anothrNick/github-tag-action@1.36.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
           custom_tag: $VERSION
