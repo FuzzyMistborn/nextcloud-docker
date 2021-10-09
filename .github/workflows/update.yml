@@ -18,11 +18,9 @@ jobs:
       - name: Run update.sh script
         run: ./update.sh
 
-      - name: get previous tag
+      - name: get last tag
+        id: last_tag
         uses: WyriHaximus/github-action-get-previous-tag@v1
-
-      - name: Set current tagged version
-        run: echo "CURRENT_VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
       - name: Set latest version
         run: echo LATEST_VERSION=$( cat latest.txt ) >> $GITHUB_ENV
@@ -38,7 +36,7 @@ jobs:
 
       - name: Push changes
         uses: anothrNick/github-tag-action@1.36.0
-        if: ${{ env.LATEST_VERSION }} != ${{ env.CURRENT_VERSION }}
+        if: ${{ env.LATEST_VERSION }} != ${{ steps.previoustag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BRANCHES: main
