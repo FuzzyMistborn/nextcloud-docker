@@ -39,7 +39,7 @@ jobs:
 
       - name: Push changes
         uses: anothrNick/github-tag-action@1.36.0
-        if: ${{ env.LATEST_VERSION }} != ${{ env.CURRENT_VERSION }}
+        if: env.LATEST_VERSION != env.CURRENT_VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BRANCHES: main
