@@ -38,9 +38,9 @@ jobs:
           fi
 
       - name: Push changes
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: marvinpinto/action-automatic-releases@latest
         if: env.LATEST_VERSION != env.CURRENT_VERSION
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_BRANCHES: main
-          CUSTOM_TAG: ${{ env.LATEST_VERSION }}
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ env.LATEST_VERSION }}
+          title: ${{ env.LATEST_VERSION }}
