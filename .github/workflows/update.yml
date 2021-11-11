@@ -30,6 +30,7 @@ jobs:
 
       - name: push
         uses: actions-x/commit@v2
+        if: env.LATEST_VERSION != env.CURRENT_VERSION
         with:
           name: GitHub Actions
           email: 41898282+github-actions[bot]@users.noreply.github.com
