@@ -12,13 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set release version
-        run: echo RELEASE=$( cat latest.txt ) >> $GITHUB_ENV
-
-      - name: Create release
-        uses: softprops/action-gh-release@v1
-        with:
-          body: Nextcloud Server v${{ env.RELEASE }} release
+      - name: Set latest version
+        run: echo LATEST_VERSION=$( cat latest.txt ) >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -35,4 +30,4 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          tags: fuzzymistborn/nextcloud-docker:latest, fuzzymistborn/nextcloud-docker:${{ env.RELEASE }}
+          tags: fuzzymistborn/nextcloud-docker:latest, fuzzymistborn/nextcloud-docker:${{ env.LATEST_VERSION }}
