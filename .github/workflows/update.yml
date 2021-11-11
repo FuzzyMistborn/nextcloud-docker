@@ -28,14 +28,13 @@ jobs:
       - name: Set latest version
         run: echo LATEST_VERSION=$( cat latest.txt ) >> $GITHUB_ENV
 
-      - name: Commit files
-        run: |
-          if [ $(git diff HEAD | wc -l) -gt 1 ]
-          then
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config user.name "GitHub Actions"
-          git commit -a -m "Github Actions Update Dockerfile" || echo "Nothing to update"
-          fi
+      - name: push
+        uses: actions-x/commit@v2
+        with:
+          name: GitHub Actions
+          email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: Github Actions Update Dockerfile
+          branch: main
 
       - name: Push changes
         uses: marvinpinto/action-automatic-releases@latest
@@ -43,4 +42,5 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: ${{ env.LATEST_VERSION }}
+          prerelease: false
           title: ${{ env.LATEST_VERSION }}
