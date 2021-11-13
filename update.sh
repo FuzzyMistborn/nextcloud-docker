@@ -1,5 +1,4 @@
 #!/bin/sh
-set -eo pipefail
 
 sudo apt install skopeo
 
