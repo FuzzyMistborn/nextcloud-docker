@@ -1,12 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 set -eo pipefail
 
-curl -fsSL 'https://download.nextcloud.com/server/releases/' |tac|tac| \
-	grep -oE 'nextcloud-[[:digit:]]+(\.[[:digit:]]+){2}' | \
-	grep -oE '[[:digit:]]+(\.[[:digit:]]+){2}' | \
-	sort -uV | \
-	tail -1 > latest.txt
+apt install skopeo
 
-version=$( cat latest.txt )
+docker_version=$(skopeo inspect docker://docker.io/nextcloud:latest | grep -o 'NEXTCLOUD_VERSION=[0-9]*.[0-9]*.[0-9]*' | cut -c 19-30)
 
-sed -i "/nextcloud/s/.*/FROM nextcloud:$version/" Dockerfile
+sed -i "/nextcloud/s/.*/FROM nextcloud:$docker_version/" Dockerfile
+
+echo $docker_version > docker_ver
+echo $docker_version > current_ver

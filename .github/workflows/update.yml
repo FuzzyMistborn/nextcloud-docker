@@ -15,22 +15,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set current version
+        run: echo CURRENT_VERSION=$( cat current_ver ) >> $GITHUB_ENV
+          
       - name: Run update.sh script
         run: ./update.sh
 
-      - name: get last tag
-        id: last_tag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
-
-      - name: Set current version
-        run: echo CURRENT_VERSION=${{ steps.last_tag.outputs.tag }} >> $GITHUB_ENV
-
-      - name: Set latest version
-        run: echo LATEST_VERSION=$( cat latest.txt ) >> $GITHUB_ENV
+      - name: Set docker version
+        run: echo DOCKER_VERSION=$( cat docker_ver ) >> $GITHUB_ENV
 
       - name: push
         uses: actions-x/commit@v2
-        if: env.LATEST_VERSION != env.CURRENT_VERSION
+        if: env.DOCKER_VERSION != env.CURRENT_VERSION
         with:
           name: GitHub Actions
           email: 41898282+github-actions[bot]@users.noreply.github.com
@@ -39,9 +35,9 @@ jobs:
 
       - name: Push changes
         uses: marvinpinto/action-automatic-releases@latest
-        if: env.LATEST_VERSION != env.CURRENT_VERSION
+        if: env.DOCKER_VERSION != env.CURRENT_VERSION
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ env.LATEST_VERSION }}
+          automatic_release_tag: ${{ env.DOCKER_VERSION }}
           prerelease: false
-          title: ${{ env.LATEST_VERSION }}
+          title: ${{ env.DOCKER_VERSION }}

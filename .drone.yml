@@ -1,0 +1,46 @@
+---
+#### WORK IN PROGRESS
+
+kind: pipeline
+type: docker
+name: Check Version
+
+#trigger:
+#  event:
+#  - cron
+#  cron:
+#  - nightly
+
+steps:
+  - name: Check Dockerhub Nextcloud Version
+    image: fuzzymistborn/docker-alpine-skopeo:latest
+    commands:
+      - /bin/sh /drone/src/update.sh
+
+  - name: push commit
+    image: appleboy/drone-git-push
+    settings:
+      remote_name: origin
+      commit: true
+      commit_message: Update Docker image to lateset version
+      branch: main
+      local_ref: main
+      author_name: Drone
+      author_email: fuzzy@fuzzymistborn.com
+
+# TG Notification on Failure
+
+---
+kind: pipeline
+type: docker
+name: Build Docker
+
+steps:
+- name: DockerHub
+  image: plugins/docker
+  settings:
+    username: fuzzymistborn
+    password:
+      from_secret: dockerhub_pw
+    repo: fuzzymistborn/nextcloud-docker
+    tags: latest
