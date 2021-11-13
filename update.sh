@@ -1,6 +1,7 @@
 #!/bin/sh
+set -eo pipefail
 
-apt install skopeo
+sudo apt install skopeo
 
 docker_version=$(skopeo inspect docker://docker.io/nextcloud:latest | grep -o 'NEXTCLOUD_VERSION=[0-9]*.[0-9]*.[0-9]*' | cut -c 19-30)
 
