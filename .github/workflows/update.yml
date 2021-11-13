@@ -24,10 +24,7 @@ jobs:
       - name: Set docker version
         run: echo DOCKER_VERSION=$( cat docker_ver ) >> $GITHUB_ENV
 
-      - name: Run scopeo test
-        run: skopeo inspect docker://docker.io/nextcloud:latest | grep -o 'NEXTCLOUD_VERSION=[0-9]*.[0-9]*.[0-9]*' | cut -c 19-30
-
-      - name: push
+      - name: Push Changes
         uses: actions-x/commit@v2
         if: env.DOCKER_VERSION != env.CURRENT_VERSION
         with:
@@ -36,7 +33,7 @@ jobs:
           message: Github Actions Update Dockerfile
           branch: main
 
-      - name: Push changes
+      - name: Generate Release
         uses: marvinpinto/action-automatic-releases@latest
         if: env.DOCKER_VERSION != env.CURRENT_VERSION
         with:
