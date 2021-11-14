@@ -54,6 +54,7 @@ steps:
     - name: docker_sock
       path: /var/run/docker.sock
   commands:
+    - NEXTCLOUD_VER=$( cat docker_ver )
     - docker login docker.io -u fuzzymistborn -p $DOCKERHUB_PASS
     - docker login ghcr.io -u fuzzymistborn -p $GHCR_PASS
     - docker build -t fuzzymistborn/nextcloud-docker:latest -t fuzzymistborn/nextcloud-docker:$NEXTCLOUD_VER -t ghcr.io/fuzzymistborn/nextcloud-docker:latest -t ghcr.io/fuzzymistborn/nextcloud-docker:$NEXTCLOUD_VER .

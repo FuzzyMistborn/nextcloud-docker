@@ -5,4 +5,3 @@ docker_version=$(skopeo inspect docker://docker.io/nextcloud:latest | grep -o 'N
 sed -i "/nextcloud/s/.*/FROM nextcloud:$docker_version/" Dockerfile
 
 echo $docker_version > docker_ver
-echo $docker_version > current_ver
