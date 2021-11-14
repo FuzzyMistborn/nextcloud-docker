@@ -23,20 +23,10 @@ steps:
       commit_message: Update Docker image to lateset version
       branch: main
       local_ref: main
-#      author_name: FuzzyDroneCI
-#      author_email: droneci@fuzzymistborn.com
+      author_name: FuzzyDroneCI
+      author_email: droneci@fuzzymistborn.com
 
-- name: Send TG Notification
-  image: appleboy/drone-telegram
-  settings:
-    token:
-      from_secret: tg_token
-    to:
-      from_secret: tg_id
-    format: markdown
-    message: "❌  Nextcloud Docker Updater Task has *FAILED*!\n🌐  [Output]({{build.link}})"
-  when:
-    status: [ failure ]
+
 
 ---
 kind: pipeline
