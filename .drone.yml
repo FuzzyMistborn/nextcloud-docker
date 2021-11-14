@@ -59,8 +59,7 @@ steps:
     - NC_MAJORVER=$( cat docker_ver | cut -c 1-2 )
     - docker login docker.io -u fuzzymistborn -p $DOCKERHUB_PASS
     - docker login ghcr.io -u fuzzymistborn -p $GHCR_PASS
-    - docker build \
-      -t fuzzymistborn/nextcloud-docker:latest \
+    - docker build -t fuzzymistborn/nextcloud-docker:latest \
       -t fuzzymistborn/nextcloud-docker:$NC_FULLVER \
       -t fuzzymistborn/nextcloud-docker:$NC_MINORVER \
       -t fuzzymistborn/nextcloud-docker:$NC_MAJORVER \
