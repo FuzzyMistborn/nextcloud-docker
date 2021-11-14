@@ -19,7 +19,6 @@ steps:
     image: appleboy/drone-git-push
     settings:
       remote_name: origin
-      remote: origin
       commit: true
       commit_message: Update Docker image to lateset version
       branch: main
