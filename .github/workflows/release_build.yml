@@ -30,4 +30,6 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          tags: fuzzymistborn/nextcloud-docker:latest, fuzzymistborn/nextcloud-docker:${{ env.LATEST_VERSION }}
+          tags: |
+            - fuzzymistborn/nextcloud-docker:latest
+            - fuzzymistborn/nextcloud-docker:${{ env.LATEST_VERSION }}
