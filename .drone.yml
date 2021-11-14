@@ -54,10 +54,20 @@ steps:
     - name: docker_sock
       path: /var/run/docker.sock
   commands:
-    - NEXTCLOUD_VER=$( cat docker_ver )
+    - NC_FULLVER=$( cat docker_ver )
+    - NC_MINORVER=$( cat docker_ver | cut -c 1-4 )
+    - NC_MAJORVER=$( cat docker_ver | cut -c 1-2 )
     - docker login docker.io -u fuzzymistborn -p $DOCKERHUB_PASS
     - docker login ghcr.io -u fuzzymistborn -p $GHCR_PASS
-    - docker build -t fuzzymistborn/nextcloud-docker:latest -t fuzzymistborn/nextcloud-docker:$NEXTCLOUD_VER -t ghcr.io/fuzzymistborn/nextcloud-docker:latest -t ghcr.io/fuzzymistborn/nextcloud-docker:$NEXTCLOUD_VER .
+    - docker build \
+      -t fuzzymistborn/nextcloud-docker:latest \
+      -t fuzzymistborn/nextcloud-docker:$NC_FULLVER \
+      -t fuzzymistborn/nextcloud-docker:$NC_MINORVER \
+      -t fuzzymistborn/nextcloud-docker:$NC_MAJORVER \
+      -t ghcr.io/fuzzymistborn/nextcloud-docker:latest \
+      -t ghcr.io/fuzzymistborn/nextcloud-docker:$NC_FULLVER \
+      -t ghcr.io/fuzzymistborn/nextcloud-docker:$NC_MINORVER \
+      -t ghcr.io/fuzzymistborn/nextcloud-docker:$NC_MAJORVER .
     - docker push --all-tags fuzzymistborn/nextcloud-docker
     - docker push --all-tags ghcr.io/fuzzymistborn/nextcloud-docker
 
