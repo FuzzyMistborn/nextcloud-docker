@@ -1,8 +1,10 @@
 # nextcloud-docker
 Custom Nextcloud docker image with smbclient and php-imagick
 
-Available Tags:
-- Latest
-- Major release (ie Nextcloud 22)
-- Minor release (ie Nextcloud 22.x)
-- Patch release (ie Nextcloud 22.1.x)
+## Available Tags:
+| Tag Example          | Description
+| -------------------- | ----------------------------------------------------------------- |
+| `latest`             | Latest release version                                            |
+| `22`                 | Major release.  Includes all tags until next major release        |
+| `22.2`               | Minor release.  Includes all tags under the 22.2.x branch         |
+| `22.2.1`             | Patch release.  Most specific tag, only includes that version     |
