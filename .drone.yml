@@ -1,6 +1,4 @@
 ---
-#### WORK IN PROGRESS
-
 kind: pipeline
 type: docker
 name: Check Version
@@ -25,22 +23,49 @@ steps:
       commit_message: Update Docker image to lateset version
       branch: main
       local_ref: main
-      author_name: Drone
-      author_email: fuzzy@fuzzymistborn.com
-
-# TG Notification on Failure
+      author_name: FuzzyDroneCI
+      author_email: droneci@fuzzymistborn.com
 
 ---
 kind: pipeline
 type: docker
 name: Build Docker
 
+trigger:
+  event:
+  - custom
+
+volumes:
+- name: docker_sock
+  host:
+    path: /var/run/docker.sock
+
 steps:
-- name: DockerHub
-  image: plugins/docker
-  settings:
-    username: fuzzymistborn
-    password:
+- name: Build and push release
+  image: fuzzymistborn/docker-alpine-skopeo:latest
+  environment:
+    DOCKERHUB_PASS:
       from_secret: dockerhub_pw
-    repo: fuzzymistborn/nextcloud-docker
-    tags: latest
+    GHCR_PASS:
+      from_secret: ghcr_pw
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
+  commands:
+    - docker login docker.io -u fuzzymistborn -p $DOCKERHUB_PASS
+    - docker login ghcr.io -u fuzzymistborn -p $GHCR_PASS
+    - docker build -t fuzzymistborn/nextcloud-docker:latest -t fuzzymistborn/nextcloud-docker:$NEXTCLOUD_VER -t ghcr.io/fuzzymistborn/nextcloud-docker:latest -t ghcr.io/fuzzymistborn/nextcloud-docker:$NEXTCLOUD_VER .
+    - docker push --all-tags fuzzymistborn/nextcloud-docker
+    - docker push --all-tags ghcr.io/fuzzymistborn/nextcloud-docker
+
+- name: Send TG Notification
+  image: appleboy/drone-telegram
+  settings:
+    token:
+      from_secret: tg_token
+    to:
+      from_secret: tg_id
+    format: markdown
+    message: "{{#success build.status}}✅  Docker Build for `{{repo.name}}` was *successful*!{{else}}❌  Docker Build for `{{repo.name}}` has *FAILED*!{{/success}} \n🌐  [Output]({{build.link}})\n📝  Commit: {{ commit.message }}"
+  when:
+    status: [ success, failure ]
