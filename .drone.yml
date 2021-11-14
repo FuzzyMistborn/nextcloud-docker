@@ -3,6 +3,12 @@ kind: pipeline
 type: docker
 name: Check Version
 
+trigger:
+  event:
+  - cron
+  cron:
+  - nightly
+
 steps:
   - name: Check Dockerhub Nextcloud Version
     image: fuzzymistborn/docker-alpine-skopeo:latest
