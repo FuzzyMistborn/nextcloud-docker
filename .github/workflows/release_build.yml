@@ -31,5 +31,5 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            - nextcloud-docker:latest
-            - nextcloud-docker:${{ env.LATEST_VERSION }}
+            - docker.io/fuzzymistborn:nextcloud-docker:latest
+            - docker.io/fuzzymistborn:nextcloud-docker:${{ env.LATEST_VERSION }}
