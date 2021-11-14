@@ -18,6 +18,8 @@ steps:
   - name: push commit
     image: appleboy/drone-git-push
     settings:
+      ssh_key:
+        from_secret: drone_gh_ssh
       remote_name: origin
       commit: true
       commit_message: Update Docker image to lateset version
