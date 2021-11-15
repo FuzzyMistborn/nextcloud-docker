@@ -14,7 +14,7 @@ steps:
       - /bin/sh /drone/src/update.sh
 
   - name: Push Commit
-    image: drone:git
+    image: drone/git
     commands:
       - git add .
       - git commit -m "[CI] Update Dockerfile to lateset NC version"
