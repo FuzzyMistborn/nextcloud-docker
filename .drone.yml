@@ -17,8 +17,13 @@ steps:
     image: drone/git
     commands:
       - git add .
-      - git commit -m "[CI] Update Dockerfile to lateset NC version"
-      - git push --force origin main
+      - |
+          if [ $(git diff HEAD | wc -l) -gt 1 ]
+          then
+          git commit -am "[CI] Update Dockerfile to lateset NC version"
+          fi
+      - git commit -m "[CI] Update Dockerfile to lateset NC version"  || echo "Nothing to update"
+      - git push origin main
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
