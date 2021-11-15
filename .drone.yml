@@ -18,7 +18,7 @@ steps:
     commands:
       - git add .
       - git commit -m "[CI] Update Dockerfile to lateset NC version"
-      - git push origin main
+      - git push --force origin main
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
