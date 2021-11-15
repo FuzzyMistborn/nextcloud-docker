@@ -14,18 +14,15 @@ steps:
       - /bin/sh /drone/src/update.sh
 
   - name: Push Commit
-    image: drone/git
+    image: appleboy/drone-git-push:latest
     commands:
       - git add .
-      - git config user.email "fuzzy@fuzzymistborn.com"
-      - git config user.name "FuzzyMistborn"
       - |
           if [ $(git diff HEAD | wc -l) -gt 1 ]
           then
           git commit -am "[CI] Update Dockerfile to lateset NC version"
           git push origin main
           fi
-      - git push origin main
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
