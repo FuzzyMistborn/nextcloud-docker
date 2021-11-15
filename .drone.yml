@@ -16,6 +16,7 @@ steps:
   - name: Push Commit
     image: appleboy/drone-git-push:latest
     commands:
+      - touch test
       - git add .
       - |
           if [ $(git diff HEAD | wc -l) -gt 1 ]
