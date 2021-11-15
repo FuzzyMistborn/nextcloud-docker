@@ -5,10 +5,7 @@ name: Check Version
 
 trigger:
   event:
-  - cron
   - custom
-  cron:
-  - nightly
 
 steps:
   - name: Check Dockerhub Nextcloud Version
