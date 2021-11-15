@@ -5,7 +5,9 @@ name: Check Version
 
 trigger:
   event:
-  - custom
+  - cron
+  cron:
+  - nightly
 
 steps:
   - name: Check Dockerhub Nextcloud Version
@@ -22,13 +24,6 @@ steps:
       branch: main
       local_ref: main
 
-  - name: Generate Tag
-    image: appleboy/drone-git-push
-    commands:
-      - dockerver=$( cat docker_ver )
-      - git tag -a $dockerver -m "Nextcloud Release v. $dockerver"
-      - git push -f origin main $dockerver
-
   - name: Send TG Notification
     image: appleboy/drone-telegram
     settings:
@@ -40,6 +35,23 @@ steps:
       message: "❌  Nextcloud Docker Updater Task has *FAILED*!\n🌐  [Output]({{build.link}})"
     when:
       status: [ failure ]
+
+---
+kind: pipeline
+type: docker
+name: Generate Tags
+
+trigger:
+  event:
+  - custom
+
+steps:
+  - name: Generate Tag
+    image: appleboy/drone-git-push
+    commands:
+      - dockerver=$( cat docker_ver )
+      - git tag -a $dockerver -m "Nextcloud Release v. $dockerver"
+      - git push origin main $dockerver
 
 ---
 kind: pipeline
