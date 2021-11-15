@@ -5,7 +5,9 @@ name: Check Version
 
 trigger:
   event:
-  - custom
+  - cron
+  cron:
+  - nightly
 
 steps:
   - name: Check Dockerhub Nextcloud Version
@@ -23,8 +25,7 @@ steps:
       - |
           if [ $(git diff HEAD | wc -l) -gt 1 ]
           then
-          git commit -am "[CI] Test"
-          git push origin main
+          git commit -am "[CI] Update Docker image to lateset version"
           fi
       - git push origin main
 
@@ -45,12 +46,10 @@ kind: pipeline
 type: docker
 name: Generate Tags
 
-
 trigger:
   event:
-  - cron
-  cron:
-  - nightly
+  - custom
+
 steps:
   - name: Generate Tag
     image: appleboy/drone-git-push
