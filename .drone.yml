@@ -14,17 +14,19 @@ steps:
       - /bin/sh /drone/src/update.sh
 
   - name: Push Commit
-    image: appleboy/drone-git-push:latest
+    image: drone/git
+    environment:
+      ssh_key:
+        from_secret: gh_ssh_key
     commands:
-      - touch test
       - git add .
       - |
           if [ $(git diff HEAD | wc -l) -gt 1 ]
           then
-          git commit -am "[CI] Update Dockerfile to lateset NC version"
+          git commit -am "[CI] Test"
           git push origin main
           fi
-      - git push origin main
+
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
