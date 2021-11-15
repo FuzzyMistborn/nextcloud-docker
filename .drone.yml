@@ -22,7 +22,6 @@ steps:
           then
           git commit -am "[CI] Update Dockerfile to lateset NC version"
           fi
-      - git commit -m "[CI] Update Dockerfile to lateset NC version"  || echo "Nothing to update"
       - git push origin main
 
   - name: Send TG Notification
