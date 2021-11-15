@@ -6,6 +6,7 @@ name: Check Version
 trigger:
   event:
   - cron
+  - custom
   cron:
   - nightly
 
@@ -15,16 +16,21 @@ steps:
     commands:
       - /bin/sh /drone/src/update.sh
 
-  - name: push commit
+  - name: Push Commit
     image: appleboy/drone-git-push
     settings:
       remote_name: origin
       commit: true
-      commit_message: Update Docker image to lateset version
+      commit_message: "[CI] Update Dockerfile to lateset NC version"
       branch: main
       local_ref: main
-      author_name: FuzzyDroneCI
-      author_email: droneci@fuzzymistborn.com
+
+  - name: Generate Tag
+    image: appleboy/drone-git-push
+    commands:
+      - dockerver=$( cat docker_ver )
+      - git tag -a $dockerver -m "Nextcloud Release v. $dockerver"
+      - git push origin main $dockerver
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
@@ -45,7 +51,7 @@ name: Build Docker
 
 trigger:
   event:
-  - custom
+  - tag
 
 volumes:
 - name: docker_sock
