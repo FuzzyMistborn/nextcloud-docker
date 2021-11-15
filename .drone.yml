@@ -15,16 +15,15 @@ steps:
     commands:
       - /bin/sh /drone/src/update.sh
 
-  - name: Push Commit
-    image: drone/git
-    commands:
-      - git add .
-      - |
-          if [ $(git diff HEAD | wc -l) -gt 1 ]
-          then
-          git commit -am "[CI] Update Docker image to lateset version"
-          fi
-      - git push origin main
+  - name: push
+    image: appleboy/drone-git-push
+    settings:
+      branch: main
+      remote: git@github.com:FuzzyMistborn/nextcloud-docker.git
+      commit: true
+      commit_message: "[CI] Update Docker image to lateset version"
+      ssh_key:
+        from_secret: gh_ssh_key
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
