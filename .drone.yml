@@ -23,7 +23,7 @@ steps:
           git commit -am "[CI] Update Dockerfile to lateset NC version"
           git push origin main
           fi
-        git push origin main
+      - git push origin main
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
