@@ -16,13 +16,13 @@ steps:
   - name: Push Commit
     image: appleboy/drone-git-push
     settings:
+      ssh_key:
+        from_secret: ssh_key
       remote_name: origin
       commit: true
       commit_message: "[CI] Update Dockerfile to lateset NC version"
       branch: main
       local_ref: main
-      author_name: FuzzyMistborn
-      author_email: fuzzy@fuzzymistborn.com
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
