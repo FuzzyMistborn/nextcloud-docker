@@ -17,9 +17,6 @@ steps:
 
   - name: Push Commit
     image: drone/git
-    environment:
-      ssh_key:
-        from_secret: gh_ssh_key
     commands:
       - git add .
       - |
