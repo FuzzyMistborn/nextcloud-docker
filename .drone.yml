@@ -48,7 +48,7 @@ trigger:
 
 steps:
   - name: generate tag
-    image: appleboy/drone-git-push
+    image: alpine/git
     environment:
       SSH_KEY:
         from_secret: ssh_key
