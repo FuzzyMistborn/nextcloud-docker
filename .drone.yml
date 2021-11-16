@@ -48,15 +48,12 @@ trigger:
 
 steps:
   - name: generate tag
-    image: alpine/git
+    image: appleboy/drone-git-push
     environment:
-      SSH_KEY:
-        from_secret: ssh_key
+      GH_API_KEY:
+        from_secret: push_api_key
     commands:
-      - mkdir $HOME/.ssh
-      - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
-      - chmod 600 $HOME/.ssh/id_rsa
-      - git remote add github git@github.com:FuzzyMistborn/nextcloud-docker.git
+      - git remote add github https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
       - dockerver=$( cat docker_ver )
       - git tag -a $dockerver -m "Nextcloud Release v. $dockerver"
       - git push github main $dockerver
