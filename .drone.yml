@@ -16,14 +16,14 @@ steps:
       - /bin/sh /drone/src/update.sh
 
   - name: push
-    image: appleboy/drone-git-push
-    settings:
-      branch: main
-      remote: git@github.com:FuzzyMistborn/nextcloud-docker.git
-      commit: true
-      commit_message: "[CI] Update Docker image to lateset version"
-      ssh_key:
-        from_secret: gh_ssh_key
+    image: drone/git
+    environment:
+      GH_API_KEY:
+        from_secret: gh_api_key
+    commands:
+      - git remote add github https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
+      - git commit -am "[CI Skip] Update Docker image to lateset version"
+      - git push github main
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
@@ -48,10 +48,10 @@ trigger:
 
 steps:
   - name: generate tag
-    image: appleboy/drone-git-push
+    image: drone/git
     environment:
       GH_API_KEY:
-        from_secret: push_api_key
+        from_secret: gh_api_key
     commands:
       - git remote add github https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
       - dockerver=$( cat docker_ver )
