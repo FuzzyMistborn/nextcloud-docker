@@ -21,9 +21,12 @@ steps:
       GH_API_KEY:
         from_secret: gh_api_key
     commands:
-      - git remote add github https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
-      - git commit -am "[CI Skip] Update Docker image to lateset version"
-      - git push github main
+      - git add --all
+      - git diff-index --quiet HEAD --ignore-submodules
+      - git commit -m "[CI Skip] Update Docker image to lateset version"
+      - git remote add deploy https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
+      - git push deploy HEAD:main
+      - git remote rm deploy
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
@@ -53,10 +56,11 @@ steps:
       GH_API_KEY:
         from_secret: gh_api_key
     commands:
-      - git remote add github https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
+      - git remote add deploy https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
       - dockerver=$( cat docker_ver )
       - git tag -a $dockerver -m "Nextcloud Release v. $dockerver"
-      - git push github main $dockerver
+      - git push deploy main $dockerver
+      - git remote rm deploy
 
 ---
 kind: pipeline
