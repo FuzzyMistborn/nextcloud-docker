@@ -85,6 +85,8 @@ steps:
     - docker build -t fuzzymistborn/nextcloud-docker:latest -t fuzzymistborn/nextcloud-docker:$NC_FULLVER -t fuzzymistborn/nextcloud-docker:$NC_MINORVER -t fuzzymistborn/nextcloud-docker:$NC_MAJORVER -t ghcr.io/fuzzymistborn/nextcloud-docker:latest -t ghcr.io/fuzzymistborn/nextcloud-docker:$NC_FULLVER -t ghcr.io/fuzzymistborn/nextcloud-docker:$NC_MINORVER -t ghcr.io/fuzzymistborn/nextcloud-docker:$NC_MAJORVER .
     - docker push --all-tags fuzzymistborn/nextcloud-docker
     - docker push --all-tags ghcr.io/fuzzymistborn/nextcloud-docker
+    - docker rmi --force $(docker images -q fuzzymistborn/nextcloud*)
+    - docker rmi --force $(docker images -q nextcloud:*)
 
 - name: Send TG Notification
   image: appleboy/drone-telegram
