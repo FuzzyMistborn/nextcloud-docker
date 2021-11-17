@@ -3,12 +3,6 @@ kind: pipeline
 type: docker
 name: Check Version
 
-trigger:
-  event:
-  - cron
-  cron:
-  - nightly
-
 steps:
   - name: Check Dockerhub Nextcloud Version
     image: fuzzymistborn/docker-alpine-skopeo:latest
@@ -21,12 +15,15 @@ steps:
       GH_API_KEY:
         from_secret: gh_api_key
     commands:
-      - git add --all
-      - git diff-index --quiet HEAD --ignore-submodules
-      - git commit -m "[CI Skip] Update Docker image to lateset version"
-      - git remote add deploy https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
-      - git push deploy HEAD:main
-      - git remote rm deploy
+      - |
+          if [ $(git diff HEAD | wc -l) -gt 1 ]
+          then
+          git add .
+          git remote add deploy https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
+          git commit -m "[CI Skip] Update Docker image to lateset version"
+          git push deploy main
+          git remote rm deploy
+          fi
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
