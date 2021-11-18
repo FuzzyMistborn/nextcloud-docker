@@ -7,7 +7,7 @@ trigger:
   event:
   - cron
   cron:
-  - nightly
+  - update
 
 steps:
   - name: Check Dockerhub Nextcloud Version
