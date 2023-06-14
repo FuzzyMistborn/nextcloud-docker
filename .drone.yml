@@ -86,7 +86,9 @@ steps:
     - docker push --all-tags fuzzymistborn/nextcloud-docker
     - docker push --all-tags ghcr.io/fuzzymistborn/nextcloud-docker
     - docker rmi --force $(docker images -q fuzzymistborn/nextcloud*)
-    - docker rmi --force $(docker images -q nextcloud:*)
+# Temporary removed to test.
+#    - docker rmi --force $(docker images -q nextcloud:*)
+#
 
 - name: Send TG Notification
   image: appleboy/drone-telegram
