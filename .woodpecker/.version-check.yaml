@@ -1,0 +1,47 @@
+steps:
+  - name: Check Dockerhub Nextcloud Version
+    image: fuzzymistborn/docker-alpine-skopeo:latest
+    commands:
+      - /bin/sh /update.sh
+
+  - name: push
+    image: drone/git
+    secrets:
+      - gh_api_key
+      - tg_id
+      - tg_token
+    commands:
+      - |+
+        if [ $(git diff HEAD | wc -l) -gt 1 ]
+        then
+        git add .
+        git remote add deploy https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
+        DOCKER_VER=$( cat docker_ver )
+        git commit -m "[CI Skip] Update Docker image to $DOCKER_VER"
+        git tag -a $DOCKER_VER -m "Nextcloud Release v. $DOCKER_VER"
+        git push deploy main
+        git push deploy main $DOCKER_VER
+        curl -s -X POST https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_ID -d parse_mode=markdown -d text="✅  New Nextcloud Docker Release! %0A🌐  [Output]($DRONE_BUILD_LINK)"
+        git remote rm deploy
+        fi
+
+  - name: Send TG Notification
+    image: appleboy/drone-telegram
+    settings:
+      token:
+        from_secret: tg_token
+      to:
+        from_secret: tg_id
+      format: markdown
+      message: |-
+        ❌  Nextcloud Docker Updater Task has *FAILED*!
+        🌐  [Output]({{build.link}})
+    when:
+      event: {}
+      status:
+        - failure
+
+when:
+  event: manual
+#  event: cron
+#  cron: update
