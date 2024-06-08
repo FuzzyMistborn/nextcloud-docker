@@ -2,7 +2,7 @@ steps:
   - name: Check Dockerhub Nextcloud Version
     image: fuzzymistborn/docker-alpine-skopeo:latest
     commands:
-      - /bin/sh /update.sh
+      - /bin/sh /woodpecker/src/github.com/FuzzyMistborn/nextcloud-docker/update.sh
 
   - name: push
     image: drone/git
