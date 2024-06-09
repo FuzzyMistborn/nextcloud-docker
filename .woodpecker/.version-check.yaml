@@ -2,20 +2,23 @@ steps:
   - name: Check Dockerhub Nextcloud Version
     image: fuzzymistborn/docker-alpine-skopeo:latest
     commands:
-      - /bin/sh /woodpecker/src/github.com/FuzzyMistborn/nextcloud-docker/update.sh
+      - /bin/sh ./update.sh
 
   - name: push
     image: drone/git
     secrets:
       - gh_api_key
+      - email
       - tg_id
       - tg_token
     commands:
       - |+
         if [ $(git diff HEAD | wc -l) -gt 1 ]
         then
+        git config --global user.email "$email"
+        git config --global user.name "FuzzyMistborn"
         git add .
-        git remote add deploy https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
+        git remote add deploy https://fuzzymistborn:$gh_api_key@github.com/FuzzyMistborn/nextcloud-docker.git
         DOCKER_VER=$( cat docker_ver )
         git commit -m "[CI Skip] Update Docker image to $DOCKER_VER"
         git tag -a $DOCKER_VER -m "Nextcloud Release v. $DOCKER_VER"
@@ -42,6 +45,5 @@ steps:
         - failure
 
 when:
-  event: manual
-#  event: cron
-#  cron: update
+  event: cron
+  cron: "update"
