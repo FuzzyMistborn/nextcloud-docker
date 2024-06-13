@@ -45,6 +45,6 @@ steps:
         - failure
 
 when:
-  event: manual
-#  event: cron
-#  cron: "update"
+#  event: manual
+  event: cron
+  cron: "update"
