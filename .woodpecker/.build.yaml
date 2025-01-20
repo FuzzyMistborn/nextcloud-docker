@@ -29,7 +29,7 @@ steps:
       format: markdown
       message: "{{#success build.status}}✅  Docker Build for `{{repo.name}}` was *successful*!{{else}}❌  Docker Build for `{{repo.name}}` has *FAILED*!{{/success}} \n🌐  [Output]({{build.link}})\n📝  Commit: {{ commit.message }}"
     when:
-      event: {}
+      event: tag
       status:
         - success
         - failure
