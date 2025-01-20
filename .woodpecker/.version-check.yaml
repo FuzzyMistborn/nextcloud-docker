@@ -6,11 +6,15 @@ steps:
 
   - name: push
     image: drone/git
-    secrets:
-      - gh_api_key
-      - email
-      - tg_id
-      - tg_token
+    environment:
+      gh_api_key:
+        from_secret: gh_api_key
+      email:
+        from_secret: email
+      tg_id:
+        from_secret: tg_id
+      tg_token:
+        from_secret: tg_token
     commands:
       - |+
         if [ $(git diff HEAD | wc -l) -gt 1 ]

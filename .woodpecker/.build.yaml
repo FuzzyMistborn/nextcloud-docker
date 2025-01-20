@@ -1,9 +1,11 @@
 steps:
   - name: Build and push release
     image: fuzzymistborn/docker-alpine-skopeo:latest
-    secrets:
-      - ghcr_pass
-      - dockerhub_pass
+    environment:
+      ghcr_pass:
+        from_secret: ghcr_pass
+      dockerhub_pass:
+        from_secret: dockerhub_pass
     commands:
       - NC_FULLVER=$( cat docker_ver )
       - NC_MINORVER=$( cat docker_ver | cut -c 1-4 )
