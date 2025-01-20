@@ -44,11 +44,10 @@ steps:
         ❌  Nextcloud Docker Updater Task has *FAILED*!
         🌐  [Output]({{build.link}})
     when:
-      event: cron
+      event: [ cron, manual ]
       status:
         - failure
 
 when:
-#  event: manual
-  event: cron
+  event: [ cron, manual ]
   cron: "update"
