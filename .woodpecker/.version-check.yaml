@@ -7,22 +7,22 @@ steps:
   - name: push
     image: drone/git
     environment:
-      gh_api_key:
+      GH_API_KEY:
         from_secret: gh_api_key
-      email:
+      EMAIL:
         from_secret: email
-      tg_id:
+      TG_ID:
         from_secret: tg_id
-      tg_token:
+      TG_TOKEN:
         from_secret: tg_token
     commands:
       - |+
         if [ $(git diff HEAD | wc -l) -gt 1 ]
         then
-        git config --global user.email "$email"
+        git config --global user.email "$EMAIL"
         git config --global user.name "FuzzyMistborn"
         git add .
-        git remote add deploy https://fuzzymistborn:$gh_api_key@github.com/FuzzyMistborn/nextcloud-docker.git
+        git remote add deploy https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
         DOCKER_VER=$( cat docker_ver )
         git commit -m "[CI Skip] Update Docker image to $DOCKER_VER"
         git tag -a $DOCKER_VER -m "Nextcloud Release v. $DOCKER_VER"
