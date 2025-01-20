@@ -6,7 +6,7 @@ steps:
 
   - name: push
     image: drone/git
-    environment:
+    enivornment:
       GH_API_KEY:
         from_secret: gh_api_key
       EMAIL:
