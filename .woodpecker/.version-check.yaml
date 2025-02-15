@@ -7,28 +7,28 @@ steps:
   - name: push
     image: drone/git
     enivornment:
-      GH_API_KEY:
+      gh_api_key:
         from_secret: gh_api_key
-      EMAIL:
+      email:
         from_secret: email
-      TG_ID:
+      tg_id:
         from_secret: tg_id
-      TG_TOKEN:
+      tg_token:
         from_secret: tg_token
     commands:
       - |+
         if [ $(git diff HEAD | wc -l) -gt 1 ]
         then
-        git config --global user.email "$EMAIL"
+        git config --global user.email "$email"
         git config --global user.name "FuzzyMistborn"
         git add .
-        git remote add deploy https://fuzzymistborn:$GH_API_KEY@github.com/FuzzyMistborn/nextcloud-docker.git
+        git remote add deploy https://fuzzymistborn:$gh_api_key@github.com/FuzzyMistborn/nextcloud-docker.git
         DOCKER_VER=$( cat docker_ver )
         git commit -m "[CI Skip] Update Docker image to $DOCKER_VER"
         git tag -a $DOCKER_VER -m "Nextcloud Release v. $DOCKER_VER"
         git push deploy main
         git push deploy main $DOCKER_VER
-        curl -s -X POST https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_ID -d parse_mode=markdown -d text="✅  New Nextcloud Docker Release! %0A🌐  [Output]({{build.link}})"
+        curl -s -X POST https://api.telegram.org/bot$tg_token/sendMessage -d chat_id=$tg_id -d parse_mode=markdown -d text="✅  New Nextcloud Docker Release! %0A🌐  [Output]({{build.link}})"
         git remote rm deploy
         fi
 
