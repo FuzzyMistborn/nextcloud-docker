@@ -1,6 +1,8 @@
 # nextcloud-docker
 Custom Nextcloud docker image with smbclient and php-imagick
 
+[![Woodpecker](https://github.ci.fuzzymistborn.com/api/badges/3/status.svg)](https://github.ci.fuzzymistborn.com/repos/3)
+
 ## Available Tags:
 | Tag Example          | Description
 | -------------------- | ----------------------------------------------------------------- |
