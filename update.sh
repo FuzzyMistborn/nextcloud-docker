@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker_version=$(skopeo inspect docker://docker.io/nextcloud:latest | grep -o 'NEXTCLOUD_VERSION=[0-9]*.[0-9]*.[0-9]*' | cut -c 19-30)
+docker_version=$(skopeo inspect docker://docker.io/nextcloud:latest | grep -o 'NEXTCLOUD_VERSION=[0-9]*\.[0-9]*\.[0-9]*' | cut -d= -f2)
 
 sed -i "/nextcloud/s/.*/FROM nextcloud:$docker_version/" Dockerfile
 

@@ -1,0 +1,7 @@
+.git
+.gitignore
+.woodpecker
+*.md
+FUNDING.yml
+LICENSE
+update.sh
